@@ -73,11 +73,12 @@ import { invariantAsyncFactory } from 'flexible-invariant'
 
 const asyncExceptionProducer = async (exceptionData: any) => {
   // await something
+  return exception
 }
 
 export const asyncInvariant: async (
   condition: any,
-  exceptionData?: Parameters<typeof asyncExceptionProducer>[0],
+  exceptionData: Parameters<typeof asyncExceptionProducer>[0],
 ) => asserts condition = asyncInvariantFactory(asyncExceptionProducer)
 
 
