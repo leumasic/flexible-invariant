@@ -2,7 +2,6 @@
   "name": "flexible-invariant",
   "version": "1.0.0",
   "description": "A flexible and tiny invariant function",
-  "main": "index.js",
   "keywords": [
     "typescript",
     "invariant",
@@ -10,11 +9,33 @@
     "asserts",
     "generic"
   ],
-  "author": "",
+  "author": "leumasic",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leumasic/flexible-invariant.git"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/wrapper.mjs",
+  "esnext": "dist/mjs/wrapper.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/cjs/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/mjs/wrapper.mjs"
+    }
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "dist/",
+    "src/"
+  ],
   "scripts": {
-    "format": "biome format --write src",
-    "test": "vitest run"
+    "build": "tsc --project tsconfig.build.json",
+    "test": "vitest run",
+    "format": "biome format --write src"
   },
   "devDependencies": {
     "@biomejs/biome": "1.7.3",
