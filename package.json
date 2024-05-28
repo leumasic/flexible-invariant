@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "A flexible and tiny invariant function",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "typescript",
     "invariant",
@@ -15,7 +12,13 @@
   ],
   "author": "",
   "license": "MIT",
+  "scripts": {
+    "format": "biome format --write src",
+    "test": "vitest run"
+  },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "@biomejs/biome": "1.7.3",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
   }
 }
