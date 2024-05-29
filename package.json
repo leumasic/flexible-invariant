@@ -7,7 +7,9 @@
     "invariant",
     "error",
     "asserts",
-    "generic"
+    "generic",
+    "flexible",
+    "throw"
   ],
   "author": "leumasic",
   "license": "MIT",
