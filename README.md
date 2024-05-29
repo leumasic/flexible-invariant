@@ -1,6 +1,8 @@
 # flexible-invariant 💪💥
 
-`flexible-invariant` is a *flexible* alternative to [tiny-invariant](https://www.npmjs.com/package/tiny-invariant)
+`flexible-invariant` is a flexible and type-safe alternative to
+[tiny-invariant](https://www.npmjs.com/package/tiny-invariant) for building
+custom invariant functions!
 
 `flexible-invariant` when ~~flexing~~ flexibility counts!
 
@@ -39,16 +41,10 @@ Use the `invariantFactory` function if you would rather throw something else.
 // utils.ts
 import { invariantFactory } from 'flexible-invariant'
 
-class MyCustomError extends Error {
-  constructor(message: string) {
-    super(`My custom error: ${message}`)
-  }
-}
+const exceptionProducer = (exceptionData?: { severity: string; message: string }) => {
+  if (!exceptionData) return new Error('Custom invariant error')
 
-const exceptionProducer = (exceptionData?: string) => {
-  if (exceptionData == null) return new MyCustomError('Invariant error')
-
-  return new MyCustomError(exceptionData)
+  return new Error(`${exceptionData.severity}: ${exceptionData.message}`)
 }
 
 export const invariant: (
@@ -60,8 +56,11 @@ export const invariant: (
 // module.ts
 import { invariant } from './utils'
 
-invariant(condition, 'Error message for MyCustomError')
-// MyCustomError('Error message for MyCustomError')
+invariant(falsyValue)
+// Error('Custom invariant error')
+
+invariant(falsyValue, { severity: 'WARN', message: 'Exception data message' })
+// Error('WARN: Exception data message')
 ```
 
 Use the `invariantAsyncFactory` function if you want to create an invariant
