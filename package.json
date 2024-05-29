@@ -36,7 +36,8 @@
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "test": "vitest run",
-    "format": "biome format --write src"
+    "format": "biome format --write src",
+    "version": "changeset version && pnpm install --no-frozen-lockfile"
   },
   "devDependencies": {
     "@biomejs/biome": "1.7.3",
