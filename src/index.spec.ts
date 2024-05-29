@@ -34,12 +34,10 @@ describe('invariant()', () => {
 
 describe('invariantFactory()', () => {
   it('returns an invariant function that throws return value of exception producer', () => {
-    const exceptionProducerMock = vi
-      .fn()
-      .mockImplementation(
-        (exceptionData: { severity: string; message: string }) =>
-          new Error(`${exceptionData.severity}: ${exceptionData.message}`),
-      )
+    const exceptionProducerMock = vi.fn(
+      (exceptionData: { severity: string; message: string }) =>
+        new Error(`${exceptionData.severity}: ${exceptionData.message}`),
+    )
 
     const invariantFn: (
       condition: any,
