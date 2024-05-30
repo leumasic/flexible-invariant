@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { invariant, invariantFactory } from './index'
+import { asyncInvariantFactory, invariant, invariantFactory } from './index'
 
 describe('invariant()', () => {
   describe('when condition is truthy', () => {
@@ -46,6 +46,26 @@ describe('invariantFactory()', () => {
 
     const exceptionData = { severity: 'ERROR', message: 'My error message' }
     expect(() => invariantFn(false, exceptionData)).toThrow(new Error('ERROR: My error message'))
+    expect(exceptionProducerMock).toHaveBeenCalledWith(exceptionData)
+  })
+})
+
+describe('asyncInvariantFactory()', () => {
+  it('returns an async invariant function that throws resolved value of exception producer', async () => {
+    const exceptionProducerMock = vi.fn(
+      async (exceptionData: { severity: string; message: string }) =>
+        new Error(`${exceptionData.severity}: ${exceptionData.message}`),
+    )
+
+    const invariantFn: (
+      condition: any,
+      exceptionData: Parameters<typeof exceptionProducerMock>[0],
+    ) => asserts condition = asyncInvariantFactory(exceptionProducerMock)
+
+    const exceptionData = { severity: 'ERROR', message: 'My error message' }
+    await expect(invariantFn(false, exceptionData)).rejects.toThrow(
+      new Error('ERROR: My error message'),
+    )
     expect(exceptionProducerMock).toHaveBeenCalledWith(exceptionData)
   })
 })

@@ -11,10 +11,10 @@ export function invariantFactory<T, K>(
 export const asyncInvariantFactory = <T, K>(
   exceptionProducer: (exceptionData: T) => Promise<K>,
 ) => {
-  return (condition: any, exceptionData: T) => {
+  return async (condition: any, exceptionData: T) => {
     if (condition) return
 
-    throw exceptionProducer(exceptionData)
+    throw await exceptionProducer(exceptionData)
   }
 }
 
