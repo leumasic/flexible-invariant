@@ -59,31 +59,6 @@ invariant(falsyValue, { severity: 'WARN', message: 'Exception data message' })
 // Error('WARN: Exception data message')
 ```
 
-### `asyncInvariantFactory(asyncExceptionProducer)`
-
-Use the `asyncInvariantFactory` function to throw a custom exception asynchronously.
-
-```ts
-// utils.ts
-import { asyncInvariantFactory } from 'flexible-invariant'
-
-const asyncExceptionProducer = async (exceptionData: any) => {
-  const response = await fetch(url)
-
-  return new Error(response.status)
-}
-
-export const asyncInvariant: async (
-  condition: any,
-  exceptionData: Parameters<typeof asyncExceptionProducer>[0],
-) => asserts condition = asyncInvariantFactory(asyncExceptionProducer)
-
-
-// module.ts
-import { asyncInvariant } from './utils'
-
-await asyncInvariant(condition, exceptionData)
-```
 
 ## Credits
 
