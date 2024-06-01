@@ -1,8 +1,8 @@
 # flexible-invariant 💪💥
 
-`flexible-invariant` is a flexible and type-safe alternative to
+`flexible-invariant` is a flexible alternative to
 [tiny-invariant](https://www.npmjs.com/package/tiny-invariant) for building
-custom invariant functions!
+type-safe invariant functions!
 
 `flexible-invariant` when ~~flexing~~ flexibility counts!
 
@@ -27,52 +27,50 @@ invariant(falsyValue)
 
 invariant(falsyValue, 'This will throw!')
 // Error('This will throw!')
+
+invariant(falsyValue, () => `This throws the callback's return value!`)
+// Error(`This throws the callback's return value!`)
 ```
 
-The error message defaults to `Invariant error`, but you can set a different
-one by passing a second argument.
+## Throwing Custom Exceptions
 
+### `invariantFactory(exceptionProducer)`
 
-### Custom Exception
-
-Use the `invariantFactory` function if you would rather throw something else.
+Use the `invariantFactory` function to throw a custom exception.
 
 ```ts
 // utils.ts
 import { invariantFactory } from 'flexible-invariant'
 
-const exceptionProducer = (exceptionData?: { severity: string; message: string }) => {
-  if (!exceptionData) return new Error('Custom invariant error')
-
+const exceptionProducer = (exceptionData: { severity: string; message: string }) => {
   return new Error(`${exceptionData.severity}: ${exceptionData.message}`)
 }
 
 export const invariant: (
   condition: any,
-  exceptionData?: Parameters<typeof exceptionProducer>[0],
+  exceptionData: Parameters<typeof exceptionProducer>[0],
 ) => asserts condition = invariantFactory(exceptionProducer)
 
 
 // module.ts
 import { invariant } from './utils'
 
-invariant(falsyValue)
-// Error('Custom invariant error')
-
 invariant(falsyValue, { severity: 'WARN', message: 'Exception data message' })
 // Error('WARN: Exception data message')
 ```
 
-Use the `invariantAsyncFactory` function if you want to create an invariant
-function that throws the resolved value of an async exception producer.
+### `asyncInvariantFactory(asyncExceptionProducer)`
+
+Use the `asyncInvariantFactory` function to throw a custom exception asynchronously.
 
 ```ts
 // utils.ts
-import { invariantAsyncFactory } from 'flexible-invariant'
+import { asyncInvariantFactory } from 'flexible-invariant'
 
 const asyncExceptionProducer = async (exceptionData: any) => {
-  // await something
-  return exception
+  const response = await fetch(url)
+
+  return new Error(response.status)
 }
 
 export const asyncInvariant: async (
