@@ -1,5 +1,11 @@
 # flexible-invariant
 
+## 2.0.0
+
+### Major Changes
+
+- [#16](https://github.com/leumasic/flexible-invariant/pull/16) [`adc1d95`](https://github.com/leumasic/flexible-invariant/commit/adc1d9594c3cac06c289f03cf5f4aae016648925) Thanks [@leumasic](https://github.com/leumasic)! - remove asyncInvariantFactory and add overload to invariantFactory
+
 ## 1.0.4
 
 ### Patch Changes
