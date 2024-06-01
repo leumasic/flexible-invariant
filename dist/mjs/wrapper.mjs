@@ -1,1 +1,1 @@
-export { invariant, asyncInvariantFactory, invariantFactory } from '../cjs/index.js'
+export { invariant, invariantFactory } from '../cjs/index.js'
