@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { asyncInvariantFactory, invariant, invariantFactory } from './index'
+import { invariant, invariantFactory } from './index'
 
 describe('invariant()', () => {
   describe('when condition is truthy', () => {
@@ -33,39 +33,31 @@ describe('invariant()', () => {
 })
 
 describe('invariantFactory()', () => {
-  it('returns an invariant function that throws return value of exception producer', () => {
-    const exceptionProducerMock = vi.fn(
-      (exceptionData: { severity: string; message: string }) =>
-        new Error(`${exceptionData.severity}: ${exceptionData.message}`),
-    )
+  describe('when called with `exceptionProducer` that does not take an argument', () => {
+    it('returns an invariant function that throws return value of exception producer', () => {
+      const invariantFn: (condition: any) => asserts condition = invariantFactory(
+        () => new Error('Custom error message'),
+      )
 
-    const invariantFn: (
-      condition: any,
-      exceptionData: Parameters<typeof exceptionProducerMock>[0],
-    ) => asserts condition = invariantFactory(exceptionProducerMock)
-
-    const exceptionData = { severity: 'ERROR', message: 'My error message' }
-    expect(() => invariantFn(false, exceptionData)).toThrow(new Error('ERROR: My error message'))
-    expect(exceptionProducerMock).toHaveBeenCalledWith(exceptionData)
+      expect(() => invariantFn(false)).toThrow(new Error('Custom error message'))
+    })
   })
-})
 
-describe('asyncInvariantFactory()', () => {
-  it('returns an async invariant function that throws resolved value of exception producer', async () => {
-    const exceptionProducerMock = vi.fn(
-      async (exceptionData: { severity: string; message: string }) =>
-        new Error(`${exceptionData.severity}: ${exceptionData.message}`),
-    )
+  describe('when called with `exceptionProducer` that takes an argument', () => {
+    it('returns an invariant function that throws return value of exception producer', () => {
+      const exceptionProducerMock = vi.fn(
+        (exceptionData: { severity: string; message: string }) =>
+          new Error(`${exceptionData.severity}: ${exceptionData.message}`),
+      )
 
-    const invariantFn: (
-      condition: any,
-      exceptionData: Parameters<typeof exceptionProducerMock>[0],
-    ) => asserts condition = asyncInvariantFactory(exceptionProducerMock)
+      const invariantFn: (
+        condition: any,
+        exceptionData: Parameters<typeof exceptionProducerMock>[0],
+      ) => asserts condition = invariantFactory(exceptionProducerMock)
 
-    const exceptionData = { severity: 'ERROR', message: 'My error message' }
-    await expect(invariantFn(false, exceptionData)).rejects.toThrow(
-      new Error('ERROR: My error message'),
-    )
-    expect(exceptionProducerMock).toHaveBeenCalledWith(exceptionData)
+      const exceptionData = { severity: 'ERROR', message: 'My error message' }
+      expect(() => invariantFn(false, exceptionData)).toThrow(new Error('ERROR: My error message'))
+      expect(exceptionProducerMock).toHaveBeenCalledWith(exceptionData)
+    })
   })
 })
