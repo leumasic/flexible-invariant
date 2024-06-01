@@ -1,5 +1,11 @@
 # flexible-invariant
 
+## 1.0.4
+
+### Patch Changes
+
+- [#14](https://github.com/leumasic/flexible-invariant/pull/14) [`5443225`](https://github.com/leumasic/flexible-invariant/commit/54432252d7541753be9b600d9c0b84d52ab70cda) Thanks [@leumasic](https://github.com/leumasic)! - add jsdoc and fix readme
+
 ## 1.0.3
 
 ### Patch Changes
